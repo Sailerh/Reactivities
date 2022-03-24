@@ -31,11 +31,13 @@ namespace Application.Activities
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var activit = await _context.Activities.FindAsync(request.Activity.Id);
+                if(activit != null)
+                {
+                    // activit.Title = request.Activity.Title ?? activit.Title;
+                    _mapper.Map(request.Activity, activit);
 
-                // activit.Title = request.Activity.Title ?? activit.Title;
-                _mapper.Map(request.Activity, activit);
-
-                await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
+                }
 
                 return Unit.Value;
             }
